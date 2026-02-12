@@ -4,8 +4,8 @@ import {
   InjectionMode
 } from "awilix";
 
-import { HealthService } from "./service/health.service";
-import { HealthController } from "./controller/health.controller";
+import { HealthService } from "../service/health.service";
+import { HealthController } from "../controller/health.controller";
 
 export const container = createContainer({
   injectionMode: InjectionMode.CLASSIC

@@ -5,6 +5,6 @@ export class HealthController {
 
   getHealth = async (_req: any, res: any) => {
     const status = await this.healthService.getStatus();
-    res.json(status);
+    res.status(200).json(status);
   };
 }
