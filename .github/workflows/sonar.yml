@@ -27,5 +27,7 @@ jobs:
       - run: npm run test:coverage
 
       - uses: SonarSource/sonarcloud-github-action@master
+        with:
+          projectBaseDir: .
         env:
           SONAR_TOKEN: ${{ secrets.TOKEN_SONAR}}
