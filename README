@@ -197,21 +197,28 @@ npm install -D vitest @vitest/coverage-v8 supertest
 ## vitest.config.ts
 
 ```ts
-import { defineConfig } from "vitest/config";
+import {defaultExclude ,defineConfig } from "vitest/config";
 
 export default defineConfig({
   test: {
     environment: "node",
     globals: true,
-    include: ["**/*.spec.ts"],
+    include: ["test/**/*.spec.ts"],
     coverage: {
       provider: "v8",
-      reporter: ["text", "html"],
+      reporter: ["text", "html", "lcov"],
       include: ["src/**/*.ts"],
-      exclude: ["**/*.spec.ts"]
+      exclude: [
+        ...defaultExclude,
+        "**/*.spec.ts",
+        "**/node_modules/**",
+        "src/config/**",
+        "**/controller/**"
+      ]
     }
   }
 });
+
 ```
 
 ---
