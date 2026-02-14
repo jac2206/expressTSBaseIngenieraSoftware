@@ -12,22 +12,24 @@ on:
 
 jobs:
   sonar:
+    name: SonarCloud
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - uses: actions/setup-node@v3
+      - uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: 22
+          cache: 'npm'
 
-      - run: npm install
+      - run: npm ci
+
       - run: npm run test:coverage
 
-      - uses: SonarSource/sonarcloud-github-action@master
-        with:
-          projectBaseDir: .
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarqube-scan-action@v6
         env:
-          SONAR_TOKEN: ${{ secrets.TOKEN_SONAR}}
+          SONAR_TOKEN: ${{ secrets.TOKEN_SONAR }}
