@@ -73,10 +73,19 @@ Responsabilidad:
 ### Ejemplo
 
 ```ts
+import { Router } from "express";
+import { container } from "../config/container";
+import { HealthController } from "../controller/health.controller";
+
+const router = Router();
+
 router.get("/health", (req, res) => {
-  const controller = container.resolve("healthController");
+  const controller = container.resolve<HealthController>("healthController");
   controller.getHealth(req, res);
 });
+
+export default router;
+
 ```
 
 ---
@@ -90,13 +99,19 @@ Responsabilidad:
 - Retornar respuesta HTTP
 
 ```ts
+import { IHealthService } from "../service/interface/health.service.interface";
+import { Request, Response } from "express";
 export class HealthController {
-  constructor(private readonly healthService: HealthService) {}
+  constructor(private readonly healthService: IHealthService) {}
 
-  getHealth = (_req: any, res: any) => {
-    res.json(this.healthService.getStatus());
+  getHealth = async (
+    _req: Request,
+     res: Response<any>):Promise<void> => {
+    const status = await this.healthService.getStatus();
+    res.status(200).json(status);
   };
 }
+
 ```
 
 ---
@@ -139,12 +154,13 @@ Esto permite:
 # 🧠 4. Inyección de Dependencias – Awilix
 
 ## Instalación
-
 ```bash
-npm install awilix awilix-express
+npm install 
+npm i
 ```
 
----
+Paquetes
+express, vitest, tsx, nodemon. awilix awilix-express
 
 ## config/container.ts
 
@@ -227,7 +243,7 @@ export default defineConfig({
 
 ```json
 "scripts": {
-  "dev": "nodemon --exec ts-node --files src/main.ts",
+  "dev": "tsx watch src/main.ts",
   "build": "tsc",
   "start": "node dist/main.js",
   "test": "vitest",
